@@ -21,13 +21,41 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
             z-index: 1000;
+            /* max-width: 700px; */
+            /* align-items: center; */
+            justify-content: center;
+        }
+        .nv {
+            display: flex;
+            min-width: 400px;
+            justify-content: center;
         }
         .navbar .icon {
-            font-size: 24px;
+            font-size: 20px;
             color: #000;
+            margin: 0 5%;
+        }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 25%;
+        }
+        @media (max-width: 460px) {
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 20%;
+        }
+        }
+        @media (max-width: 370px) {
+            .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 14%;
+        }
         }
         .container {
             max-width: 900px;
@@ -54,7 +82,7 @@
         .card {
             flex: 1 1 calc(30% - 20px);
             max-width: calc(30% - 20px);
-            border: 1px solid #000;
+            border: 1px solid #777777;
             border-radius: 10px;
             padding: 15px;
             text-align: center;
@@ -158,10 +186,13 @@
 </head>
 <body>
 
-<div class="navbar">
-    <i class="fas fa-pizza-slice icon"></i>
-    <i class="fas fa-shopping-cart icon"></i>
-</div>
+    <div class="navbar">
+        <span class="nv">
+            <i class="fas fa-search icon"></i>
+            <div class="logo">Chipilivery</div>
+            <i class="fas fa-shopping-cart icon"></i>
+        </span>
+    </div>
 
 <div class="container">
     <div class="search-bar">
