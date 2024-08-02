@@ -151,9 +151,9 @@
             align-items: center;
             justify-content: center;
         }
-        .card button:hover{
+        /* .card button:hover{
             background-color: #444;
-        } 
+        }  */
         .card .quantity-control span {
             margin: 0 20px; /* margin for + and - buttons */
         }
@@ -194,6 +194,11 @@
             .card {
                 flex: 1 1 calc(50% - 10px);
                 max-width: calc(50% - 10px);
+            }
+        }
+        @media (hover:hover) {
+            .card button:hover {
+                background-color: #444;
             }
         }
     </style>
