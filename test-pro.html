@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Delivery Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #000;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            z-index: 1000;
+            justify-content: center;
+        }
+        .nv {
+            display: flex;
+            min-width: 400px;
+            justify-content: center;
+        }
+        .navbar .icon {
+            position: relative;
+            font-size: 20px;
+            color: #000;
+            margin: 0 5%;
+            cursor: pointer;
+        }
+        .navbar .icon .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 30%;
+            font-size: 10px;
+        }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 25%;
+        }
+        @media (max-width: 460px) {
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 20%;
+        }
+        }
+        @media (max-width: 370px) {
+            .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 14%;
+        }
+        }
+        .container {
+            max-width: 900px;
+            margin: 80px auto 20px; /* Added margin top for fixed navbar */
+            padding: 20px 40px;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .card {
+            flex: 1 1 calc(30% - 20px);
+            max-width: calc(30% - 20px);
+            border: 1px solid #aaaaaa;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            width: 100%;
+            align-items: center;
+        }
+        .card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .card .price {
+            font-size: 16px;
+            margin-bottom: 10px;
+            flex-grow: 1;
+            display: flex;
+            align-items: flex-end; /* Aligning to bottom */
+        }
+        .card .button-container {
+            width: 100%;
+            height: 40px; /* fixed height for button */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card button, .card .quantity-control {
+            width: 100%;
+            height: 100%; /* fixed height */
+            border: none;
+            border-radius: 10px;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card button:hover{
+            background-color: #444;
+        } 
+        .card .quantity-control span {
+            margin: 0 20px; /* margin for + and - buttons */
+        }
+        .card .quantity-control button {
+            background-color: transparent;
+            color: #fff;
+            font-size: 20px;
+            width: 30px;
+            height: 100%;
+        }
+        .card .quantity-control button:hover {
+            background-color: #000;
+        }
+        .cart-button {
+            position: fixed;
+            bottom: 5%;
+            right: 4%;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                flex: 1 1 calc(45% - 20px);
+                max-width: calc(45% - 20px);
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px 20px;
+            }
+            .card {
+                flex: 1 1 calc(50% - 10px);
+                max-width: calc(50% - 10px);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            padding-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 0 auto;
+            padding: 20px;
+            /* border: 1px solid #888; */
+            /* width: 100%; */
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            height: 90%;
+            margin-top: 30px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 50px;
+            /* font-weight: bold; */
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .profile-info {
+            text-align: center;
+        }
+
+        .profile-info h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+            color: #888;
+        }
+
+        .profile-options {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .profile-options li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .profile-options li:first-child {
+            border-top: none;
+        }
+
+        .profile-options li:hover {
+            background-color: #f9f9f9;
+        }
+
+        .profile-options li i {
+            margin-right: 10px;
+        }
+
+        .contact-button {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .contact-button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <span class="nv">
+            <i class="fa-solid fa-user icon" id="profile-icon"></i>
+            <div class="logo">Chipilivery</div>
+            <i class="fas fa-shopping-cart icon">
+                <span class="cart-count" style="display: none;">0</span>
+            </i>
+        </span>
+    </div>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" placeholder="Search in the store">
+        </div>
+        <div class="cards">
+            <div class="card">
+                <img src="https://via.placeholder.com/150" alt="Product Image">
+                <div class="card-content">
+                    <h3>Short Title</h3>
+                    <div class="price">45₽</div>
+                    <div class="button-container">
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more cards as needed -->
+        </div>
+    </div>
+
+    <button id="cart-button" class="cart-button" style="display: none;">Cart (0)</button>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+            </div>
+            <div class="profile-info">
+                <h2>Сергей</h2>
+                <p>+7 995 410 36 80</p>
+            </div>
+            <ul class="profile-options">
+                <li><i class="fas fa-box"></i> Заказы</li>
+                <li><i class="fas fa-map-marker-alt"></i> Адреса</li>
+                <li><i class="fas fa-gift"></i> Бонусы</li>
+                <li><i class="fas fa-credit-card"></i> Способы оплаты</li>
+                <li><i class="fas fa-cog"></i> Настройки</li>
+            </ul>
+            <button class="contact-button">Связаться с нами</button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const buttonContainer = this.closest('.button-container');
+                buttonContainer.innerHTML = `
+                    <div class="quantity-control">
+                        <button class="decrease">-</button>
+                        <span class="quantity">1</span>
+                        <button class="increase">+</button>
+                    </div>
+                `;
+
+                const decreaseButton = buttonContainer.querySelector('.decrease');
+                const increaseButton = buttonContainer.querySelector('.increase');
+                const quantityDisplay = buttonContainer.querySelector('.quantity');
+
+                let quantity = 1;
+
+                decreaseButton.addEventListener('click', function() {
+                    if (quantity > 1) {
+                        quantity--;
+                        quantityDisplay.textContent = quantity;
+                    } else {
+                        buttonContainer.innerHTML = '<button class="add-to-cart">Add to Cart</button>';
+                        const newButton = buttonContainer.querySelector('.add-to-cart');
+                        newButton.addEventListener('click', buttonClickHandler);
+                    }
+                });
+
+                increaseButton.addEventListener('click', function() {
+                    quantity++;
+                    quantityDisplay.textContent = quantity;
+                });
+            });
+
+            function buttonClickHandler() {
+                const buttonContainer = this.closest('.button-container');
+                buttonContainer.innerHTML = `
+                    <div class="quantity-control">
+                        <button class="decrease">-</button>
+                        <span class="quantity">1</span>
+                        <button class="increase">+</button>
+                    </div>
+                `;
+
+                const decreaseButton = buttonContainer.querySelector('.decrease');
+                const increaseButton = buttonContainer.querySelector('.increase');
+                const quantityDisplay = buttonContainer.querySelector('.quantity');
+
+                let quantity = 1;
+
+                decreaseButton.addEventListener('click', function() {
+                    if (quantity > 1) {
+                        quantity--;
+                        quantityDisplay.textContent = quantity;
+                    } else {
+                        buttonContainer.innerHTML = '<button class="add-to-cart">Add to Cart</button>';
+                        const newButton = buttonContainer.querySelector('.add-to-cart');
+                        newButton.addEventListener('click', buttonClickHandler);
+                    }
+                });
+
+                increaseButton.addEventListener('click', function() {
+                    quantity++;
+                    quantityDisplay.textContent = quantity;
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let cartCount = 0;
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    updateCartButton(++cartCount);
+
+                    const buttonContainer = this.closest('.button-container');
+                    buttonContainer.innerHTML = `
+                        <div class="quantity-control">
+                            <button class="decrease">-</button>
+                            <span class="quantity">1</span>
+                            <button class="increase">+</button>
+                        </div>
+                    `;
+
+                    const decreaseButton = buttonContainer.querySelector('.decrease');
+                    const increaseButton = buttonContainer.querySelector('.increase');
+                    const quantityDisplay = buttonContainer.querySelector('.quantity');
+
+                    let quantity = 1;
+
+                    decreaseButton.addEventListener('click', function() {
+                        if (quantity > 1) {
+                            quantity--;
+                            quantityDisplay.textContent = quantity;
+                        } else {
+                            updateCartButton(--cartCount);
+                            buttonContainer.innerHTML = '<button class="add-to-cart">Add to Cart</button>';
+                            const newButton = buttonContainer.querySelector('.add-to-cart');
+                            newButton.addEventListener('click', buttonClickHandler);
+                        }
+                    });
+
+                    increaseButton.addEventListener('click', function() {
+                        quantity++;
+                        quantityDisplay.textContent = quantity;
+                    });
+                });
+
+                function buttonClickHandler() {
+                    const buttonContainer = this.closest('.button-container');
+                    buttonContainer.innerHTML = `
+                        <div class="quantity-control">
+                            <button class="decrease">-</button>
+                            <span class="quantity">1</span>
+                            <button class="increase">+</button>
+                        </div>
+                    `;
+
+                    const decreaseButton = buttonContainer.querySelector('.decrease');
+                    const increaseButton = buttonContainer.querySelector('.increase');
+                    const quantityDisplay = buttonContainer.querySelector('.quantity');
+
+                    let quantity = 1;
+
+                    decreaseButton.addEventListener('click', function() {
+                        if (quantity > 1) {
+                            quantity--;
+                            quantityDisplay.textContent = quantity;
+                        } else {
+                            updateCartButton(--cartCount);
+                            buttonContainer.innerHTML = '<button class="add-to-cart">Add to Cart</button>';
+                            const newButton = buttonContainer.querySelector('.add-to-cart');
+                            newButton.addEventListener('click', buttonClickHandler);
+                        }
+                    });
+
+                    increaseButton.addEventListener('click', function() {
+                        quantity++;
+                        quantityDisplay.textContent = quantity;
+                    });
+                }
+            });
+
+            function updateCartButton(count) {
+                const cartButton = document.getElementById('cart-button');
+                const cartCountDisplay = document.querySelector('.navbar .cart-count');
+                
+                if (count > 0) {
+                    cartButton.style.display = 'block';
+                    cartButton.textContent = `Cart (${count})`;
+                    cartCountDisplay.style.display = 'block';
+                    cartCountDisplay.textContent = count;
+                } else {
+                    cartButton.style.display = 'none';
+                    cartCountDisplay.style.display = 'none';
+                }
+            }
+        });
+
+        const profileIcon = document.getElementById('profile-icon');
+        const modal = document.getElementById('profileModal');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        profileIcon.onclick = function() {
+            modal.style.display = 'block';
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
