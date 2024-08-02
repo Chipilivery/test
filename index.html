@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1 user-scalable=no">
     <title>Delivery Service</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        a {
+            text-decoration: none;
+            color:#000;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -21,17 +26,54 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
             z-index: 1000;
+            justify-content: center;
+        }
+        .nv {
+            display: flex;
+            min-width: 400px;
+            justify-content: center;
         }
         .navbar .icon {
-            font-size: 24px;
+            position: relative;
+            font-size: 20px;
             color: #000;
+            margin: 0 5%;
+        }
+        .navbar .icon .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 30%;
+            font-size: 10px;
+        }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 25%;
+        }
+        @media (max-width: 460px) {
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 20%;
+        }
+        }
+        @media (max-width: 370px) {
+            .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 14%;
+        }
         }
         .container {
             max-width: 900px;
-            margin: 80px auto 20px; /* Добавляем отступ сверху для фиксированного навбара */
+            margin: 80px auto 20px; /* Added margin top for fixed navbar */
             padding: 20px 40px;
         }
         .search-bar {
@@ -54,8 +96,8 @@
         .card {
             flex: 1 1 calc(30% - 20px);
             max-width: calc(30% - 20px);
-            border: 1px solid #000;
-            border-radius: 10px;
+            border: 1px solid #aaaaaa;
+            border-radius: 20px;
             padding: 15px;
             text-align: center;
             transition: transform 0.3s;
@@ -67,7 +109,7 @@
         .card img {
             max-width: 100%;
             height: auto;
-            border-radius: 10px;
+            border-radius: 15px;
             margin-bottom: 15px;
         }
         .card-content {
@@ -87,20 +129,20 @@
             margin-bottom: 10px;
             flex-grow: 1;
             display: flex;
-            align-items: flex-end; /* Выравнивание по нижнему краю */
+            align-items: flex-end; /* Aligning to bottom */
         }
         .card .button-container {
             width: 100%;
-            height: 40px; /* фиксированная высота для кнопки */
+            height: 40px; /* fixed height for button */
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .card button, .card .quantity-control {
             width: 100%;
-            height: 100%; /* фиксированная высота */
+            height: 100%; /* fixed height */
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             background-color: #000;
             color: #fff;
             cursor: pointer;
@@ -113,7 +155,7 @@
             background-color: #444;
         } 
         .card .quantity-control span {
-            margin: 0 20px; /* отступы для кнопок + и - */
+            margin: 0 20px; /* margin for + and - buttons */
         }
         .card .quantity-control button {
             background-color: transparent;
@@ -125,6 +167,20 @@
         .card .quantity-control button:hover {
             background-color: #000;
         }
+        .cart-button {
+            position: fixed;
+            bottom: 5%;
+            right: 4%;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1000;
+        }
+
         @media (max-width: 768px) {
             .card {
                 flex: 1 1 calc(45% - 20px);
@@ -144,10 +200,17 @@
 </head>
 <body>
 
-<div class="navbar">
-    <i class="fas fa-pizza-slice icon"></i>
-    <i class="fas fa-shopping-cart icon"></i>
-</div>
+    <div class="navbar">
+        <span class="nv">
+            <!-- <i class="fas fa-search icon"></i> -->
+            <a href="profile.html" class="icon"><i class="fa-solid fa-user icon"></i></a>
+            <!-- <i class="fa-thin fa-circle-user"></i> -->
+            <div class="logo"><a href="">Chipilivery</a></div>
+            <i class="fas fa-shopping-cart icon">
+                <span class="cart-count" style="display: none;">0</span>
+            </i>
+        </span>
+    </div>
 
 <div class="container">
     <div class="search-bar">
@@ -244,9 +307,12 @@
                 </div>
             </div>
         </div>
-        <!-- Добавьте больше карточек по необходимости -->
+        <!-- Add more cards as needed -->
+        
     </div>
+    
 </div>
+<button id="cart-button" class="cart-button" style="display: none;">Cart (0)</button>
 
 <script>
 document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -316,7 +382,99 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    let cartCount = 0;
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            updateCartButton(++cartCount);
+
+            const buttonContainer = this.closest('.button-container');
+            buttonContainer.innerHTML = `
+                <div class="quantity-control">
+                    <button class="decrease">-</button>
+                    <span class="quantity">1</span>
+                    <button class="increase">+</button>
+                </div>
+            `;
+
+            const decreaseButton = buttonContainer.querySelector('.decrease');
+            const increaseButton = buttonContainer.querySelector('.increase');
+            const quantityDisplay = buttonContainer.querySelector('.quantity');
+
+            let quantity = 1;
+
+            decreaseButton.addEventListener('click', function() {
+                if (quantity > 1) {
+                    quantity--;
+                    quantityDisplay.textContent = quantity;
+                } else {
+                    updateCartButton(--cartCount);
+                    buttonContainer.innerHTML = '<button class="add-to-cart">Add to Cart</button>';
+                    const newButton = buttonContainer.querySelector('.add-to-cart');
+                    newButton.addEventListener('click', buttonClickHandler);
+                }
+            });
+
+            increaseButton.addEventListener('click', function() {
+                quantity++;
+                quantityDisplay.textContent = quantity;
+            });
+        });
+
+        function buttonClickHandler() {
+            const buttonContainer = this.closest('.button-container');
+            buttonContainer.innerHTML = `
+                <div class="quantity-control">
+                    <button class="decrease">-</button>
+                    <span class="quantity">1</span>
+                    <button class="increase">+</button>
+                </div>
+            `;
+
+            const decreaseButton = buttonContainer.querySelector('.decrease');
+            const increaseButton = buttonContainer.querySelector('.increase');
+            const quantityDisplay = buttonContainer.querySelector('.quantity');
+
+            let quantity = 1;
+
+            decreaseButton.addEventListener('click', function() {
+                if (quantity > 1) {
+                    quantity--;
+                    quantityDisplay.textContent = quantity;
+                } else {
+                    updateCartButton(--cartCount);
+                    buttonContainer.innerHTML = '<button class="add-to-cart">Add to Cart</button>';
+                    const newButton = buttonContainer.querySelector('.add-to-cart');
+                    newButton.addEventListener('click', buttonClickHandler);
+                }
+            });
+
+            increaseButton.addEventListener('click', function() {
+                quantity++;
+                quantityDisplay.textContent = quantity;
+            });
+        }
+    });
+
+    function updateCartButton(count) {
+        const cartButton = document.getElementById('cart-button');
+        const cartCountDisplay = document.querySelector('.navbar .cart-count');
+        
+        if (count > 0) {
+            cartButton.style.display = 'block';
+            cartButton.textContent = `Cart (${count})`;
+            cartCountDisplay.style.display = 'block';
+            cartCountDisplay.textContent = count;
+        } else {
+            cartButton.style.display = 'none';
+            cartCountDisplay.style.display = 'none';
+        }
+    }
+});
 </script>
+
 
 </body>
 </html>
