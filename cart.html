@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+
+        a {
+            text-decoration: none;
+            color:#000;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #000;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            z-index: 1000;
+            justify-content: center;
+        }
+        .nv {
+            display: flex;
+            min-width: 400px;
+            justify-content: center;
+        }
+        .navbar .icon {
+            position: relative;
+            font-size: 20px;
+            color: #000;
+            margin: 0 5%;
+        }
+        .navbar .icon .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 30%;
+            font-size: 10px;
+        }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 25%;
+        }
+        @media (max-width: 460px) {
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 20%;
+        }
+        }
+        @media (max-width: 370px) {
+            .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 14%;
+        }
+        }
+        .container {
+            max-width: 600px;
+            margin: 60px auto 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+        .cart-item-details h4 {
+            margin: 0 0 5px;
+            font-size: 14px;
+        }
+        .cart-item-details p {
+            margin: 0;
+            color: #888;
+            font-size: 14px;
+        }
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        .cart-item-quantity button {
+            padding: 5px 10px;
+            border: 1px solid #000;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .cart-item-quantity input {
+            width: 20px;
+            text-align: center;
+            border: 1px solid #fff;
+            background-color: #fff;
+            border-radius: 4px;
+            margin: 0 5px;
+            font-size: 16px;
+        }
+        .cart-item-price {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .btn {
+            display: block;
+            padding: 12px 24px;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            margin: 20px auto 0; /* Center the button */
+        }
+        .btn:hover {
+            background-color: #333;
+        }
+        .form-group {
+            margin-top: 20px;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group button.apply-btn {
+            position: absolute;
+            right: -2px;
+            /* top: 35px; */
+            padding: 12px;
+            border: none;
+            background-color: #e6e6e6;
+            color: #8c8c8c;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 17px;
+        }
+        .sold-out-overlay {
+            position: absolute;
+            /* top: 0; */
+            left: 0;
+            width: 70px;
+            height: 70px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .remove-btn {
+            padding: 7px 10px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        #comment {
+            resize: none;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .back-arrow {
+            position: absolute;
+            left: 0;
+            font-size: 36px;
+            color: #aaaaaa;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        h2 {
+            margin: 10px 0;
+            font-size: 24px;
+            text-align: center;
+            width: 100%;
+        } 
+        input:focus, textarea:focus {
+            outline: 0;
+            /* border: 2px solid #ddd; */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <span class="nv">
+            <a href="profile.html" class="icon"><i class="fa-solid fa-user icon"></i></a>
+            <div class="logo"><a href="index.html">Chipilivery</a></div>
+            <a href="cart.html" class="icon"><i class="fas fa-shopping-cart icon">
+                <span class="cart-count" style="display: none;">0</span>
+            </i></a>
+        </span>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-arrow"><i class="fa-solid fa-xmark"></i></a>
+            <h2>Корзина</h2>
+        </div>
+        <div class="cart-item">
+            <div class="sold-out-overlay">Раскупили</div>
+            <img src="https://via.placeholder.com/70" alt="Product Image">
+            <div class="cart-item-details">
+                <h4>Черешня, 500 г</h4>
+                <p>0 ₽</p>
+            </div>
+            <button class="remove-btn">Удалить</button>
+        </div>
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/70" alt="Product Image">
+            <div class="cart-item-details">
+                <h4>Йогурт Самокат лесная ягода, 1.2%</h4>
+                <p>82 ₽</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button type="button" onclick="decreaseQuantity(this)">-</button>
+                <input type="text" value="1" readonly disabled="true">
+                <button type="button" onclick="increaseQuantity(this)">+</button>
+            </div>
+        </div>
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/70" alt="Product Image">
+            <div class="cart-item-details">
+                <h4>Круассан Самокат с фисташковой начинкой</h4>
+                <p>139 ₽</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button type="button" onclick="decreaseQuantity(this)">-</button>
+                <input type="text" value="1" readonly disabled="true">
+                <button type="button" onclick="increaseQuantity(this)">+</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="comment">Комментарий к заказу</label>
+            <textarea id="comment" name="comment">Оставить у двери</textarea>
+        </div>
+        <div class="form-group">
+            <label for="protocol">Промокод</label>
+            <input type="text" id="protocol" name="protocol" value="">
+            <button type="button" class="apply-btn" onclick="applyPromoCode()">Применить</button>
+        </div>
+        <div class="cart-total">
+            <span>Итого</span>
+            <span>221 ₽</span>
+        </div>
+        <button type="button" class="btn">Оплатить</button>
+    </div>
+
+    <script>
+        function decreaseQuantity(button) {
+            const input = button.nextElementSibling;
+            let value = parseInt(input.value, 10);
+            if (value > 1) {
+                value--;
+                input.value = value;
+            }
+        }
+
+        function increaseQuantity(button) {
+            const input = button.previousElementSibling;
+            let value = parseInt(input.value, 10);
+            value++;
+            input.value = value;
+        }
+
+        function applyPromoCode() {
+            const promoCode = document.getElementById('protocol').value;
+            alert(`Промокод ${promoCode} применен!`);
+        }
+    </script>
+
+</body>
+</html>

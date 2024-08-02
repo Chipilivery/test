@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        a {
+            text-decoration: none;
+            color:#000;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #000;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            z-index: 1000;
+            justify-content: center;
+        }
+        .nv {
+            display: flex;
+            min-width: 400px;
+            justify-content: center;
+        }
+        .navbar .icon {
+            position: relative;
+            font-size: 20px;
+            color: #000;
+            margin: 0 5%;
+        }
+        .navbar .icon .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 30%;
+            font-size: 10px;
+        }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 25%;
+        }
+        @media (max-width: 460px) {
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 20%;
+        }
+        }
+        @media (max-width: 370px) {
+            .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 14%;
+        }
+        }
+        .container {
+            max-width: 600px;
+            margin: 80px auto 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .form-group input[readonly], .form-group input[disabled] {
+            background-color: #f9f9f9;
+            color: #999;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group .small {
+            font-size: 12px;
+            color: #888;
+        }
+        .btn {
+            display: block;
+            padding: 12px 24px;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            margin: 20px auto 0; /* Center the button */
+        }
+        .btn:hover {
+            background-color: #333;
+        }
+        .cart-container {
+            padding: 20px;
+        }
+        .cart-item {
+            display: flex;
+            /* align-items: center; */
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+        }
+        .cart-item-details {
+            flex: 1;
+            padding-left: 10px;
+        }
+        .cart-item-title {
+            font-size: 14px;
+            margin: 0;
+        }
+        .cart-item-price {
+            font-size: 14px;
+            color: #888;
+        }
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        .cart-item-quantity button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cart-item-quantity span {
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .cart-summary {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-summary div {
+            font-size: 16px;
+        }
+        .comment-section,
+        .leave-at-door,
+        .promo-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .comment-section input,
+        .promo-section input {
+            width: 100%;
+            padding: 12px;
+            margin-left: 10px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .leave-at-door input {
+            margin-left: 10px;
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <span class="nv">
+        <a href="profile.html" class="icon"><i class="fa-solid fa-user icon"></i></a>
+        <div class="logo"><a href="index.html">Chipilivery</a></div>
+        <i class="fas fa-shopping-cart icon">
+            <span class="cart-count" style="display: none;">0</span>
+        </i>
+    </span>
+</div>
+
+<div class="container">
+    <div class="cart-container">
+        <div class="comment-section form-group">
+            <label for="comment">Комментарий</label>
+            <input type="text" id="comment" placeholder="Комментарий">
+        </div>
+        <div class="leave-at-door form-group">
+            <label for="leave-at-door">Оставить у двери</label>
+            <input type="checkbox" id="leave-at-door">
+        </div>
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/50" alt="Черешня, 500 г">
+            <div class="cart-item-details">
+                <p class="cart-item-title">Черешня, 500 г</p>
+                <p class="cart-item-price">0 ₽</p>
+            </div>
+            <button class="btn">Заменить на похожее</button>
+        </div>
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/50" alt="Йогурт Самокат лесная ягода, 1.2%">
+            <div class="cart-item-details">
+                <p class="cart-item-title">Йогурт Самокат лесная ягода, 1.2%</p>
+                <p class="cart-item-price">82 ₽</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+            </div>
+        </div>
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/50" alt="Круассан Самокат с фисташковой начинкой">
+            <div class="cart-item-details">
+                <p class="cart-item-title">Круассан Самокат с фисташковой начинкой</p>
+                <p class="cart-item-price">139 ₽</p>
+            </div>
+            <div class="cart-item-quantity">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+            </div>
+        </div>
+        <div class="promo-section form-group">
+            <label for="promo">Промокод или скидка</label>
+            <input type="text" id="promo" placeholder="Промокод или скидка">
+        </div>
+        <div class="cart-summary">
+            <div>Итого: 221 ₽</div>
+            <button class="btn">Перейти к оформлению</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let cartCount = 2; // Update this value based on actual cart count
+
+    // Mock function to update cart count
+    function updateCartCount(count) {
+        const cartCountDisplay = document.querySelector('.navbar .cart-count');
+        if (count > 0) {
+            cartCountDisplay.style.display = 'block';
+            cartCountDisplay.textContent = count;
+        } else {
+            cartCountDisplay.style.display = 'none';
+        }
+    }
+
+    updateCartCount(cartCount);
+
+    document.querySelectorAll('.cart-item-quantity button').forEach(button => {
+        button.addEventListener('click', function() {
+            const quantityElement = this.closest('.cart-item-quantity').querySelector('span');
+            let quantity = parseInt(quantityElement.textContent);
+
+            if (this.textContent === '+') {
+                quantity++;
+            } else if (this.textContent === '-' && quantity > 1) {
+                quantity--;
+            }
+
+            quantityElement.textContent = quantity;
+        });
+    });
+});
+</script>
+
+</body>
+</html>

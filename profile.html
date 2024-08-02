@@ -134,7 +134,21 @@
         .profile-info .item .icon {
             color: #ccc;
         }
-        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .back-arrow {
+            position: absolute;
+            left: 0;
+            font-size: 36px;
+            color: #888;
+            cursor: pointer;
+            margin-right: 15px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -143,13 +157,16 @@
         <span class="nv">
             <a href="profile.html" class="icon"><i class="fa-solid fa-user icon"></i></a>
             <div class="logo"><a href="index.html">Chipilivery</a></div>
-            <i class="fas fa-shopping-cart icon">
+            <a href="cart.html" class="icon"><i class="fas fa-shopping-cart icon">
                 <span class="cart-count" style="display: none;">0</span>
-            </i>
+            </i></a>
         </span>
     </div>
 
     <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-arrow"><i class="fa-solid fa-xmark"></i></a>
+        </div>
         <div class="profile">
             <img src="profile.jpg" alt="Profile Image">
             <h2>Сергей</h2>
