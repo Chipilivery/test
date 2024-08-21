@@ -459,7 +459,7 @@
     <div class="cards">
         <!-- <a href="#" class="card"> -->
         <div class="card">
-            <a href="javascript:PopUpShow()" style="margin: 0;">
+            <a href="javascript:PopUpShow()" style="margin: 0;" class="im">
                 <img src="https://via.placeholder.com/150" alt="Product Image">
             </a>
             <div class="card-content">
@@ -778,15 +778,23 @@ document.addEventListener('DOMContentLoaded', function() {
     //     PopUpHide();
     // });
     //Функция отображения PopUp
-    function PopUpShow(){
-        $("#popup1").show();
-        document.body.style.overflow = 'hidden';
-    }
+    // function PopUpShow(){
+    //     $("#popup1").show();
+    //     document.body.style.overflow = 'hidden';
+    // }
     //Функция скрытия PopUp
     function PopUpHide(){
         $("#popup1").hide();
         document.body.style.overflow = 'auto';
     }
+
+    document.querySelectorAll('.im').forEach(bu => {
+    bu.addEventListener('click', function() {
+        $("#popup1").show();
+        document.body.style.overflow = 'hidden';
+    
+        });
+    });
 
 
     function decreaseQuantity() {
