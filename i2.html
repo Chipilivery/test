@@ -400,7 +400,7 @@
         </span>
     </div>
 
-    <div class="container2 b-popup" id="popup1">
+    <div class="container2 b-popup" id="popup1" hidden>
         <div class="info-cont">
         <div class="header">
             <a href="javascript:PopUpHide()" class="back-arrow"><i class="fa-solid fa-xmark"></i></a>
@@ -773,10 +773,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
 <script>
-    $(document).ready(function(){
-        //Скрыть PopUp при загрузке страницы    
-        PopUpHide();
-    });
+    // $(document).ready(function(){
+    //     //Скрыть PopUp при загрузке страницы    
+    //     PopUpHide();
+    // });
     //Функция отображения PopUp
     function PopUpShow(){
         $("#popup1").show();
